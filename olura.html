@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Light Shadow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #0a0a0a;
+            --secondary-black: #1a1a1a;
+            --accent-white: #f8f8f8;
+            --subtle-gray: #888;
+            --light-gray: #e5e5e5;
+            --accent-blue: #5e978c;
+            --warm-beige: #f4f1eb;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--accent-white);
+            color: var(--primary-black);
+            line-height: 1.3;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* BACK BUTTON */
+        .back-button {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            z-index: 999;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            color: var(--subtle-gray);
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--primary-black);
+        }
+
+        .back-button::before {
+            content: '← ';
+            margin-right: 8px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: var(--warm-beige);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 40px;
+        }
+
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--subtle-gray);
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 200;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: 60px;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--subtle-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* MAIN CONTENT */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* LAYOUT VARIATIONS */
+        .section {
+            margin-bottom: 200px;
+        }
+
+        /* Section with large image and side text */
+        .image-text-section {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .large-image {
+            width: 100%;
+            aspect-ratio: 3/2;
+            background: var(--light-gray);
+            overflow: hidden;
+        }
+
+        .large-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+                .large-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .side-text {
+            padding-top: 60px;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--subtle-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            letter-spacing: -0.01em;
+        }
+
+        .text-block {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--subtle-gray);
+            margin-bottom: 25px;
+            max-width: 280px;
+        }
+
+        /* Full width image with overlay */
+        .full-image-section {
+            position: relative;
+            height: 80vh;
+            margin: 0 -40px 200px;
+            background: var(--primary-black);
+        }
+
+        .full-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 80px 60px 60px;
+        }
+
+        .overlay-title {
+            font-size: 42px;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .overlay-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            max-width: 400px;
+        }
+
+        /* Grid mosaic */
+
+
+        .grid-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 200px;
+max-width: fit-content;
+    /* New: center the container itself */
+    width: 100%;
+    justify-content: center;
+
+}
+
+        .grid-item {
+            background: var(--light-gray);
+        }
+
+        .grid-item:first-child {
+            grid-row: span 2;
+            aspect-ratio: 1/1.5;
+        }
+
+        .grid-item:nth-child(2) {
+            aspect-ratio: 1;
+        }
+
+        .grid-item:nth-child(3) {
+            aspect-ratio: 1;
+        }
+
+        .grid-item:nth-child(4) {
+            grid-column: span 2;
+            aspect-ratio: 2/1;
+        }
+
+        .grid-item:nth-child(5) {
+            aspect-ratio: 1;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .grid-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Text only section */
+        .text-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 100px;
+            margin-bottom: 200px;
+            padding: 100px 0;
+        }
+
+        .text-section-left {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--subtle-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            line-height: 2;
+        }
+
+        .text-section-right {
+            padding-top: 20px;
+        }
+
+        .large-text {
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Two column layout */
+        .two-column-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 200px;
+        }
+
+        .column-image {
+            aspect-ratio: 4/5;
+            background: var(--light-gray);
+            overflow: hidden;
+        }
+
+        .column-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+           .column-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Final section */
+        .final-section {
+            background: var(--primary-black);
+            color: white;
+            padding: 120px 60px;
+            margin: 0 -40px;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+
+        .final-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+            max-width: 500px;
+            margin: 0 auto 60px;
+        }
+
+        .next-project {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            color: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 15px 25px;
+            transition: all 0.3s ease;
+        }
+
+        .next-project:hover {
+            color: white;
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }
+
+        .next-project::after {
+            content: '→';
+            font-size: 10px;
+        }
+
+        /* CURSOR */
+        .cursor {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.hover {
+            transform: scale(3);
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 0 30px;
+            }
+
+            .image-text-section {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .text-section {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .two-column-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .grid-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .grid-item:nth-child(4) {
+                grid-column: span 2;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .full-image-section {
+                margin: 0 -30px 200px;
+                height: 60vh;
+            }
+
+            .final-section {
+                margin: 0 -30px;
+                padding: 100px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 0 20px;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                font-size: 8px;
+            }
+
+            .hero-content {
+                padding: 0 20px;
+            }
+
+            .hero-title {
+                font-size: 60px;
+            }
+
+            .section {
+                margin-bottom: 120px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .large-text {
+                font-size: 20px;
+            }
+
+            .grid-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .grid-item:first-child {
+                grid-row: span 1;
+                aspect-ratio: 4/3;
+            }
+
+            .grid-item:nth-child(4) {
+                grid-column: span 1;
+                aspect-ratio: 4/3;
+            }
+
+            .full-image-section {
+                margin: 0 -20px 120px;
+                height: 50vh;
+            }
+
+            .image-overlay {
+                padding: 40px 30px 30px;
+            }
+
+            .overlay-title {
+                font-size: 28px;
+            }
+
+            .final-section {
+                margin: 0 -20px;
+                padding: 80px 20px;
+            }
+
+            .text-section {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">Back to Main</a>
+
+    <!-- Hero -->
+    <section class="hero fade-in">
+        <div class="hero-content">
+            <div class="hero-subtitle">Motion Design / Digital Art</div>
+            <h1 class="hero-title">Form Light<br>Shadow</h1>
+            <div class="hero-meta">
+                <span>Client: Studio Vision</span>
+                <span>Year: 2024</span>
+                <span>Duration: 8 Weeks</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Overview Section -->
+        <section class="section fade-in">
+            <div class="image-text-section">
+                <div class="large-image">
+                    <img src="images/olura/mockup1.png" alt="Visual Research">
+                    
+                </div>
+                <div class="side-text">
+                    <div class="section-number">001 — Overview</div>
+                    <h2 class="section-title">Brand Concept</h2>
+                    <p class="text-block">
+                        Olura is a women’s supplement brand focused on hormonal balance and embracing every change. The identity combines a soft, feminine aesthetic with a playful and natural tone, expressed through a warm pink palette and graceful motifs.
+                    </p>
+                    <p class="text-block">
+                        Each supplement is distinguished by a unique natural illustration, reflecting its purpose—whether for skin, hair, stress, or other needs—creating a system that feels both cohesive and diverse. The packaging comes in two formats: a larger container for powders and a cardboard box with glass pill jars, balancing practicality with elegance.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Text Section -->
+        <section class="section fade-in">
+            <div class="text-section">
+                <div class="text-section-left">
+                    Methodology<br>
+                    Research<br>
+                    Development<br>
+                    —<br>
+                    Process
+                </div>
+                <div class="text-section-right">
+                    <p class="large-text">
+                      The brand was developed using a mix of mockups and short videos to showcase the key visuals in context. Soft, atmospheric presentations highlight the feminine and natural aesthetic, while dynamic clips bring movement and life to the identity, emphasizing Olura’s playful, graceful, and approachable personality.
+                    </p>
+                    <p class="text-block">
+                       Soft overlays, mixed media and blured photography are used all thoughout as the main technique to achieve this atmosphere.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Column Images -->
+        <section class="section fade-in">
+            <div class="two-column-section">
+                <div class="column-image">
+                    <img src="images/olura/mupi.jpg" alt="Development Process">
+                </div>
+                <div class="column-image">
+                    <img src="images/olura/mockup3.png" alt="Form Light Shadow">
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Grid Mosaic -->
+        <section class="section fade-in">
+            <div class="grid-section">
+                <div class="grid-item">
+                    <img src="images/olura/mupi1.png" alt="Detail 1">
+                </div>
+                <div class="grid-item">
+                    <img src="images/olura/pill.png" alt="Detail 2">
+                </div>
+                <div class="grid-item">
+                     <video autoplay loop src="images/olura/keyvisual.mp4" alt="Detail 5"></video>
+                    
+                </div>
+                <div class="grid-item">
+                  <img src="images/olura/mupibanner.png" alt="Detail 3">
+                </div>
+                <div class="grid-item">
+                    <img src="images/olura/box.png" alt="Detail 5">
+                </div>
+                  <div class="grid-item">
+                    <video autoplay loop src="images/olura/keyvisual_4.mp4" alt="Detail 5">
+                </div>
+                  <div class="grid-item">
+                    <img src="images/olura/card.png" alt="Detail 5">
+                </div>
+            </div>
+        </section>
+
+                <section class="section fade-in">
+            <div class="two-column-section">
+                <div class="column-image">
+                    <img src="images/olura/flask2.png" alt="Development Process">
+                </div>
+                <div class="column-image">
+                    <img src="images/olura/PNG/keyvisual_1.png" alt="Visual Research">
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Full Width Image -->
+    <section class="section fade-in">
+        <div class="full-image-section">
+            <img src="images/olura/mupi2.png" alt="Final Execution" class="full-image">
+            <div class="image-overlay">
+                <h2 class="overlay-title">Visual Impact & Execution</h2>
+                <p class="overlay-text">
+                    Olura's packaging combines graceful natural motifs with a soft pink palette, creating a feminine and uplifting presence. The two packaging formats—powder containers and cardboard boxes with glass jars—maintain elegance and functionality, while mockups and short videos bring the brand to life in a playful, atmospheric way.
+                 </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Section -->
+    <section class="final-section fade-in">
+        <h2 class="final-title">Project Complete</h2>
+        <p class="final-text">
+        Olura blends care, beauty, and playfulness into a cohesive brand. Through thoughtful packaging, natural motifs, and dynamic visuals, the identity supports women in every stage of change with elegance and warmth.
+        </p>
+        <a href="./illustração.html" class="next-project">Next Project</a>
+    </section>
+
+    <script>
+        // Cursor
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function updateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.transform = `translate(${cursorX - 3}px, ${cursorY - 3}px)`;
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        // Cursor hover
+        document.querySelectorAll('a, img').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
